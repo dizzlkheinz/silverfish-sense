@@ -444,6 +444,14 @@
       </ul>
     </section>
 
+    <section class="card" aria-label="Gentle gear">
+      <h2>Gentle gear (optional)</h2>
+      <div class="muted" style="margin-top:6px;">If you want to support the site, these are harm-free helpers.</div>
+      <div class="shopgrid" id="shop">
+        <!-- Filled by JS -->
+      </div>
+    </section>
+
     <div class="grid">
       <section class="card">
         <h2>60-second check-in</h2>
@@ -535,19 +543,6 @@
             <div style="font-weight:800;">When to escalate (still non-lethal)</div>
             <ul class="list" id="escalate"></ul>
           </div>
-
-          <div class="section">
-            <div style="font-weight:800;">Gentle gear (optional)</div>
-            <div class="muted" style="margin-top:6px;">If you want to support the site, these are harm-free helpers.</div>
-
-            <div class="shopgrid" id="shop">
-              <!-- Filled by JS; replace # links with affiliate links later -->
-            </div>
-
-            <div class="tiny" style="margin-top:10px;">
-              Want a paid add-on? Add a “Download my plan as PDF” button later (easy), or a “room-by-room checklist”.
-            </div>
-          </div>
         </div>
 
         <footer>
@@ -630,6 +625,33 @@
       return {color:"var(--risk)", dot:"var(--risk)", label:"HIGH", note:"This environment is very comfortable for them, or your valuables are exposed. Focus on habitat shift + item protection."};
     }
 
+    const SHOP_ITEMS = [
+      {
+        name:"Hygrometer (humidity meter)",
+        why:"Turns anxiety into data. You’ll know if you’re actually drying the space.",
+        links:[
+          {label:"Canada", href:"https://amzn.to/4r4tUnf"},
+          {label:"US", href:"https://amzn.to/4qyz7Ti"}
+        ]
+      },
+      {
+        name:"Small dehumidifier",
+        why:"A gentle, non-lethal habitat shift for bathrooms, closets, basements.",
+        links:[
+          {label:"Canada", href:"https://amzn.to/45NYxEU"},
+          {label:"US", href:"https://amzn.to/4kjW1Mm"}
+        ]
+      },
+      {
+        name:"Sealed storage bins / book boxes",
+        why:"Protects books and papers without harming any insects.",
+        links:[
+          {label:"Canada", href:"https://amzn.to/4qlHaCA"},
+          {label:"US", href:"https://amzn.to/3O491d9"}
+        ]
+      }
+    ];
+
     function buildCopy(data, meta){
       // reassurance + plan
       const reassureBits = [];
@@ -693,35 +715,7 @@
       escalate.push("If you rent: document humidity/condensation and ask for ventilation or leak inspection (this is building health, not a cleanliness issue).");
       escalate.push("If you want a “boundary” without harm: focus on sealing entry gaps and making preferred zones (bathroom/basement) less damp.");
 
-      // gentle gear
-      const shop = [];
-      // note: keep links placeholders so you can add affiliate later
-      shop.push({
-        name:"Hygrometer (humidity meter)",
-        why:"Turns anxiety into data. You’ll know if you’re actually drying the space.",
-        links:[
-          {label:"Canada", href:"https://amzn.to/4r4tUnf"},
-          {label:"US", href:"https://amzn.to/4qyz7Ti"}
-        ]
-      });
-      shop.push({
-        name:"Small dehumidifier",
-        why:"A gentle, non-lethal habitat shift for bathrooms, closets, basements.",
-        links:[
-          {label:"Canada", href:"https://amzn.to/45NYxEU"},
-          {label:"US", href:"https://amzn.to/4kjW1Mm"}
-        ]
-      });
-      shop.push({
-        name:"Sealed storage bins / book boxes",
-        why:"Protects books and papers without harming any insects.",
-        links:[
-          {label:"Canada", href:"https://amzn.to/4qlHaCA"},
-          {label:"US", href:"https://amzn.to/3O491d9"}
-        ]
-      });
-
-      return { reassureHTML: reassureBits.join(""), plan, protect, escalate, shop };
+      return { reassureHTML: reassureBits.join(""), plan, protect, escalate };
     }
 
     function render(){
@@ -781,10 +775,15 @@
         escEl.appendChild(li);
       });
 
-      // shop
+      document.getElementById('result').style.display = "block";
+      window.__lastResult = { data, meta, pal, copy };
+    }
+
+    function renderShop(){
       const shopEl = document.getElementById('shop');
+      if (!shopEl) return;
       shopEl.innerHTML = "";
-      copy.shop.forEach(item=>{
+      SHOP_ITEMS.forEach(item=>{
         const div = document.createElement('div');
         div.className = "shopitem";
         const links = (item.links && item.links.length)
@@ -799,9 +798,6 @@
         `;
         shopEl.appendChild(div);
       });
-
-      document.getElementById('result').style.display = "block";
-      window.__lastResult = { data, meta, pal, copy };
     }
 
     function resetAll(){
@@ -884,6 +880,7 @@
     // initialize
     resetAll();
     initVisitCounter();
+    renderShop();
   </script>
 </body>
 </html>
