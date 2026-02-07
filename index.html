@@ -11,21 +11,30 @@
   <meta property="og:type" content="website" />
   <style>
     :root{
-      --bg:#0b0f14;
-      --card:#101826;
-      --muted:#7f93aa;
-      --text:#e8f0ff;
-      --accent:#7ee787;
-      --warn:#ffd36a;
-      --risk:#ff7b72;
-      --border:#213044;
-      --chip:#14233a;
-      --link:#8ab4ff;
+      --bg:#0a0024;
+      --card:#13082f;
+      --muted:#cfd6ff;
+      --text:#fff7ff;
+      --accent:#52f7ff;
+      --warn:#ffe66a;
+      --risk:#ff6ad5;
+      --border:#4a2cff;
+      --chip:#1a0f3b;
+      --link:#7dffb2;
+      --neon-pink:#ff6ad5;
+      --neon-cyan:#52f7ff;
+      --neon-yellow:#ffe66a;
+      --neon-green:#7dffb2;
     }
     *{box-sizing:border-box}
     body{
-      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      background: radial-gradient(1200px 700px at 20% 0%, #16223a 0%, var(--bg) 55%, #070a0f 100%);
+      margin:0;
+      font-family: "Comic Sans MS", "Comic Sans", "Trebuchet MS", "Verdana", sans-serif;
+      background-color: var(--bg);
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect width='80' height='80' fill='none'/%3E%3Ccircle cx='10' cy='12' r='1.2' fill='%23ffffff'/%3E%3Ccircle cx='52' cy='28' r='1.4' fill='%23ffe66a'/%3E%3Ccircle cx='70' cy='60' r='1.1' fill='%2352f7ff'/%3E%3Ccircle cx='26' cy='66' r='1' fill='%23ff6ad5'/%3E%3C/svg%3E"),
+        radial-gradient(1200px 700px at 20% 0%, #2b1055 0%, var(--bg) 55%, #04000f 100%);
+      background-attachment: fixed;
       color:var(--text);
       line-height:1.45;
     }
@@ -41,20 +50,22 @@
     }
     .logo{
       width:44px; height:44px; border-radius:14px;
-      background: linear-gradient(135deg, #203a61 0%, #13233b 35%, #0e1726 100%);
-      border:1px solid var(--border);
+      background: linear-gradient(135deg, #ff6ad5 0%, #52f7ff 45%, #ffe66a 100%);
+      border:2px solid var(--border);
       display:grid; place-items:center;
-      box-shadow: 0 14px 45px rgba(0,0,0,.35);
+      box-shadow: 0 10px 0 rgba(0,0,0,.35), 0 0 18px rgba(82,247,255,.6);
       font-size:22px;
     }
-    h1{font-size:26px; margin:0}
-    .subtitle{color:var(--muted); margin-top:6px; max-width:64ch}
+    .logo svg{width:32px; height:32px; filter: drop-shadow(0 0 6px rgba(255,255,255,.5))}
+    h1{font-size:28px; margin:0; font-family: "Impact", "Arial Black", "Trebuchet MS", sans-serif; text-shadow: 2px 2px 0 #000, 0 0 12px rgba(255,106,213,.7)}
+    .subtitle{color:var(--muted); margin-top:6px; max-width:64ch; text-shadow: 1px 1px 0 rgba(0,0,0,.6)}
     .pillrow{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
     .pill{
-      background: rgba(20,35,58,.65);
-      border:1px solid var(--border);
+      background: rgba(10,0,36,.75);
+      border:2px solid var(--border);
       padding:6px 10px; border-radius:999px;
-      font-size:13px; color:#cfe2ff;
+      font-size:13px; color:#ffffff;
+      text-shadow: 0 0 6px rgba(82,247,255,.45);
     }
     .grid{
       display:grid;
@@ -66,11 +77,11 @@
       .grid{grid-template-columns: 1fr;}
     }
     .card{
-      background: rgba(16,24,38,.78);
-      border:1px solid var(--border);
+      background: rgba(19,8,47,.82);
+      border:2px solid var(--border);
       border-radius:18px;
       padding:16px;
-      box-shadow: 0 18px 60px rgba(0,0,0,.28);
+      box-shadow: 0 8px 0 rgba(0,0,0,.45), 0 18px 60px rgba(0,0,0,.28);
       backdrop-filter: blur(10px);
     }
     .card h2{margin:0 0 10px; font-size:18px}
@@ -182,6 +193,126 @@
       border-radius:8px;
       color:#cfe2ff;
     }
+    .badge-row{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+      margin-top:10px;
+    }
+    .blink{
+      display:inline-block;
+      padding:4px 8px;
+      border:2px dashed var(--neon-yellow);
+      background: rgba(0,0,0,.45);
+      color: var(--neon-yellow);
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      animation: blink 1.1s steps(2, start) infinite;
+      text-shadow: 0 0 8px rgba(255,230,106,.8);
+    }
+    .counter{
+      font-family: "Courier New", "Lucida Console", monospace;
+      background: rgba(0,0,0,.4);
+      border:2px solid var(--border);
+      padding:4px 8px;
+      color: var(--neon-green);
+      box-shadow: inset 0 0 10px rgba(82,247,255,.25);
+    }
+    .marquee{
+      border:2px dotted var(--neon-pink);
+      background: linear-gradient(90deg, rgba(255,106,213,.25), rgba(82,247,255,.25));
+      padding:6px 8px;
+      text-transform:uppercase;
+      font-family: "Courier New", "Lucida Console", monospace;
+      margin-bottom:12px;
+    }
+    .marquee marquee{
+      color: var(--neon-yellow);
+      font-weight:800;
+      letter-spacing:.12em;
+      text-shadow: 0 0 10px rgba(255,230,106,.9);
+    }
+    .geo-card{
+      margin-top:14px;
+      border-style: double;
+    }
+    .gallery{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap:12px;
+      align-items:stretch;
+    }
+    .polaroid{
+      background:#fff;
+      color:#111;
+      border:4px solid #fff;
+      border-bottom-width:18px;
+      box-shadow: 0 6px 0 rgba(0,0,0,.45), 0 10px 22px rgba(0,0,0,.4);
+      padding:6px;
+      border-radius:6px;
+      transform: rotate(-1deg);
+    }
+    .polaroid img, .polaroid svg{
+      width:100%;
+      height:150px;
+      object-fit:cover;
+      background:#f2f2f2;
+      border-radius:4px;
+      display:block;
+    }
+    .polaroid figcaption{
+      font-size:12px;
+      margin-top:6px;
+      text-align:center;
+      font-family: "Courier New", "Lucida Console", monospace;
+    }
+    .tilt-1{transform: rotate(-2deg)}
+    .tilt-2{transform: rotate(1.6deg)}
+    .tilt-3{transform: rotate(-1deg)}
+    .stamps{
+      display:flex; gap:8px; flex-wrap:wrap;
+      margin-top:12px;
+    }
+    .stamp{
+      display:inline-flex; align-items:center; justify-content:center;
+      font-family: "Courier New", "Lucida Console", monospace;
+      font-size:11px;
+      padding:6px 8px;
+      background: linear-gradient(135deg, #0b0033, #1e0b5a);
+      border:2px solid var(--neon-cyan);
+      color: var(--neon-cyan);
+      text-transform:uppercase;
+      box-shadow: 0 0 10px rgba(82,247,255,.35);
+    }
+    .fishsvg{
+      width:100%;
+      height:150px;
+      filter: drop-shadow(0 0 10px rgba(82,247,255,.6));
+    }
+    .fishsvg .body{
+      fill: url(#fishGrad);
+      stroke: #1b0a44;
+      stroke-width:3;
+    }
+    .fishsvg .segment{
+      fill:none;
+      stroke: rgba(0,0,0,.4);
+      stroke-width:2;
+      stroke-dasharray:6 6;
+    }
+    .fishsvg .antenna{
+      fill:none;
+      stroke: #111;
+      stroke-width:3;
+      stroke-linecap:round;
+    }
+    @keyframes blink{
+      0%, 49%{opacity:1}
+      50%, 100%{opacity:0}
+    }
+    @media (prefers-reduced-motion: reduce){
+      .blink{animation:none}
+      .marquee marquee{scroll-behavior:auto}
+    }
   </style>
   <script type="application/ld+json">
   {
@@ -199,7 +330,21 @@
   <div class="wrap">
     <header>
       <div class="brand">
-        <div class="logo" aria-hidden="true">🐛</div>
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 64 64" role="img" aria-label="Silverfish icon">
+            <defs>
+              <linearGradient id="miniGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#0a0024"/>
+                <stop offset="1" stop-color="#ffffff"/>
+              </linearGradient>
+            </defs>
+            <path d="M8 34c8-16 28-22 45-11 5 3 5 5 0 8-17 11-37 6-45 3z" fill="url(#miniGrad)" stroke="#0b0033" stroke-width="2"/>
+            <path d="M12 30c6-10 20-14 33-7" fill="none" stroke="#0b0033" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="16" cy="32" r="2" fill="#0b0033"/>
+            <path d="M10 26c-4-6-8-8-10-10" fill="none" stroke="#0b0033" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 40c-4 6-8 8-10 10" fill="none" stroke="#0b0033" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
         <div>
           <h1>Silverfish Sense</h1>
           <div class="subtitle">
@@ -210,6 +355,11 @@
             <span class="pill">No traps</span>
             <span class="pill">Coexistence-first</span>
             <span class="pill">Books + clothes safe</span>
+          </div>
+          <div class="badge-row">
+            <span class="blink">Under Construction</span>
+            <span class="counter">Visitors: 000421</span>
+            <span class="counter">Updated: Feb 7, 2026</span>
           </div>
         </div>
       </div>
@@ -224,6 +374,52 @@
         <div class="tiny" style="margin-top:8px;">Tip: after changes, sightings often fade over 1–3 weeks.</div>
       </div>
     </header>
+
+    <section class="card geo-card" aria-label="Silverfish gallery and mascot">
+      <div class="marquee">
+        <marquee behavior="alternate" scrollamount="6">Welcome to Silverfish Sense — the calmest corner of the web</marquee>
+      </div>
+      <div class="gallery">
+        <figure class="polaroid tilt-1">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Silberfischchen.jpg" alt="Silverfish on a pale surface, photographed from above" loading="lazy" />
+          <figcaption>Silverfish in the wild (photo).</figcaption>
+        </figure>
+        <figure class="polaroid tilt-2">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/0/00/Silverfish_%2849727286462%29.jpg" alt="Close-up of a silverfish on rough stone" loading="lazy" />
+          <figcaption>Close-up on texture (photo).</figcaption>
+        </figure>
+        <figure class="polaroid tilt-3">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/3/37/Lepisma_saccharinum_265840101.jpg" alt="Silverfish with long antennae photographed on a dark surface" loading="lazy" />
+          <figcaption>Long antennae, classic look (photo).</figcaption>
+        </figure>
+        <figure class="polaroid tilt-2">
+          <svg class="fishsvg" viewBox="0 0 240 90" role="img" aria-label="Silverfish SVG mascot">
+            <defs>
+              <linearGradient id="fishGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#52f7ff"/>
+                <stop offset="0.6" stop-color="#ffe66a"/>
+                <stop offset="1" stop-color="#ff6ad5"/>
+              </linearGradient>
+            </defs>
+            <path class="body" d="M18 45c16-26 64-34 118-26 28 4 56 18 76 26-20 8-48 22-76 26-54 8-102 0-118-26z"/>
+            <path class="segment" d="M60 30c6 10 6 20 0 30"/>
+            <path class="segment" d="M90 26c7 12 7 26 0 38"/>
+            <path class="segment" d="M120 24c7 14 7 28 0 42"/>
+            <circle cx="40" cy="42" r="4" fill="#111"/>
+            <path class="antenna" d="M32 40c-18-8-26-18-30-30"/>
+            <path class="antenna" d="M32 48c-18 8-26 18-30 30"/>
+            <path d="M200 36l28-12-8 16 12 6-12 6 8 16-28-12" fill="#1b0a44"/>
+          </svg>
+          <figcaption>SVG mascot, custom drawn.</figcaption>
+        </figure>
+      </div>
+      <div class="stamps">
+        <span class="stamp">Best Viewed With</span>
+        <span class="stamp">No Poisons</span>
+        <span class="stamp">100% Bug Respect</span>
+        <span class="stamp">GeoCities Spirit</span>
+      </div>
+    </section>
 
     <div class="grid">
       <section class="card">
@@ -334,6 +530,12 @@
         <footer>
           <div><b>Myth check:</b> Seeing silverfish usually doesn’t mean “your home is dirty.” It often means “this spot is comfortably damp or sheltered.”</div>
           <div style="margin-top:8px;">Keyboard tip: press <span class="kbd">Ctrl</span> + <span class="kbd">F</span> to find “humidity” later.</div>
+          <div style="margin-top:10px;">
+            Photos:
+            <a href="https://commons.wikimedia.org/wiki/File:Silberfischchen.jpg">Silberfischchen.jpg</a> by Sebastian Stabinger (CC BY 1.0+),
+            <a href="https://commons.wikimedia.org/wiki/File:Silverfish_(49727286462).jpg">Silverfish (49727286462).jpg</a> by James Johnstone (CC BY 2.0),
+            <a href="https://commons.wikimedia.org/wiki/File:Lepisma_saccharinum_265840101.jpg">Lepisma saccharinum 265840101.jpg</a> by Steven Lamonde / iNaturalist (CC BY 4.0).
+          </div>
         </footer>
       </aside>
     </div>
@@ -472,7 +674,14 @@
       // gentle gear
       const shop = [];
       // note: keep links placeholders so you can add affiliate later
-      shop.push({name:"Hygrometer (humidity meter)", why:"Turns anxiety into data. You’ll know if you’re actually drying the space."});
+      shop.push({
+        name:"Hygrometer (humidity meter)",
+        why:"Turns anxiety into data. You’ll know if you’re actually drying the space.",
+        links:[
+          {label:"Canada", href:"https://amzn.to/4r4tUnf"},
+          {label:"US", href:"https://amzn.to/4qyz7Ti"}
+        ]
+      });
       shop.push({name:"Small dehumidifier", why:"A gentle, non-lethal habitat shift for bathrooms, closets, basements."});
       shop.push({name:"Sealed storage bins / book boxes", why:"Protects books and papers without harming any insects."});
       shop.push({name:"Draft stopper / simple caulk kit", why:"Reduces pathways and hiding seams; better boundaries, fewer surprise sightings."});
@@ -543,11 +752,14 @@
       copy.shop.forEach(item=>{
         const div = document.createElement('div');
         div.className = "shopitem";
+        const links = (item.links && item.links.length)
+          ? item.links.map(l=>`<a href="${l.href}" class="tiny" target="_blank" rel="noopener noreferrer">${l.label} link →</a>`).join(" ")
+          : `<a href="#" onclick="return false;" class="tiny">Add your affiliate link →</a>`;
         div.innerHTML = `
           <div class="name">${item.name}</div>
           <div class="why">${item.why}</div>
           <div style="margin-top:10px;">
-            <a href="#" onclick="return false;" class="tiny">Add your affiliate link →</a>
+            ${links}
           </div>
         `;
         shopEl.appendChild(div);
