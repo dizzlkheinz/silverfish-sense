@@ -682,9 +682,22 @@
           {label:"US", href:"https://amzn.to/4qyz7Ti"}
         ]
       });
-      shop.push({name:"Small dehumidifier", why:"A gentle, non-lethal habitat shift for bathrooms, closets, basements."});
-      shop.push({name:"Sealed storage bins / book boxes", why:"Protects books and papers without harming any insects."});
-      shop.push({name:"Draft stopper / simple caulk kit", why:"Reduces pathways and hiding seams; better boundaries, fewer surprise sightings."});
+      shop.push({
+        name:"Small dehumidifier",
+        why:"A gentle, non-lethal habitat shift for bathrooms, closets, basements.",
+        links:[
+          {label:"Canada", href:"https://amzn.to/45NYxEU"},
+          {label:"US", href:"https://amzn.to/4kjW1Mm"}
+        ]
+      });
+      shop.push({
+        name:"Sealed storage bins / book boxes",
+        why:"Protects books and papers without harming any insects.",
+        links:[
+          {label:"Canada", href:"https://amzn.to/4qlHaCA"},
+          {label:"US", href:"https://amzn.to/3O491d9"}
+        ]
+      });
 
       return { reassureHTML: reassureBits.join(""), plan, protect, escalate, shop };
     }
