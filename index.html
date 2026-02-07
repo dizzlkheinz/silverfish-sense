@@ -371,7 +371,7 @@
           </div>
           <div class="badge-row">
             <span class="blink">Under Construction</span>
-            <span class="counter">Visitors: 000421</span>
+            <span class="counter" id="visitCounter">Visitors: 000001</span>
             <span class="counter">Updated: Feb 7, 2026</span>
           </div>
         </div>
@@ -851,8 +851,27 @@
     document.getElementById('btnReset').addEventListener('click', resetAll);
     document.getElementById('btnCopy').addEventListener('click', copyResults);
 
+    function initVisitCounter(){
+      const key = "silverfish-sense-visits";
+      let count = 0;
+      try{
+        count = parseInt(localStorage.getItem(key) || "0", 10);
+        if (Number.isNaN(count)) count = 0;
+        count += 1;
+        localStorage.setItem(key, String(count));
+      }catch(e){
+        // If storage is blocked, show a single visit
+        count = 1;
+      }
+
+      const pad = String(count).padStart(6, "0");
+      const el = document.getElementById("visitCounter");
+      if (el) el.textContent = `Visitors: ${pad}`;
+    }
+
     // initialize
     resetAll();
+    initVisitCounter();
   </script>
 </body>
 </html>
