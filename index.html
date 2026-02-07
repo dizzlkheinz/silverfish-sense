@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Silverfish Sense — Calm, Non-Lethal Silverfish Coexistence Tool</title>
+  <meta name="description" content="Worried about silverfish? Get a calm explanation and a non-lethal, coexistence-first plan to protect your home and your stuff." />
+  <meta name="robots" content="index,follow" />
+  <meta property="og:title" content="Silverfish Sense — Coexistence Tool" />
+  <meta property="og:description" content="A calm, non-lethal plan for living with silverfish while protecting books, clothes, and food." />
+  <meta property="og:type" content="website" />
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --card:#101826;
+      --muted:#7f93aa;
+      --text:#e8f0ff;
+      --accent:#7ee787;
+      --warn:#ffd36a;
+      --risk:#ff7b72;
+      --border:#213044;
+      --chip:#14233a;
+      --link:#8ab4ff;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: radial-gradient(1200px 700px at 20% 0%, #16223a 0%, var(--bg) 55%, #070a0f 100%);
+      color:var(--text);
+      line-height:1.45;
+    }
+    a{color:var(--link); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:980px; margin:0 auto; padding:28px 18px 72px}
+    header{
+      display:flex; gap:14px; align-items:flex-start; justify-content:space-between; flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+    .brand{
+      display:flex; gap:12px; align-items:center;
+    }
+    .logo{
+      width:44px; height:44px; border-radius:14px;
+      background: linear-gradient(135deg, #203a61 0%, #13233b 35%, #0e1726 100%);
+      border:1px solid var(--border);
+      display:grid; place-items:center;
+      box-shadow: 0 14px 45px rgba(0,0,0,.35);
+      font-size:22px;
+    }
+    h1{font-size:26px; margin:0}
+    .subtitle{color:var(--muted); margin-top:6px; max-width:64ch}
+    .pillrow{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
+    .pill{
+      background: rgba(20,35,58,.65);
+      border:1px solid var(--border);
+      padding:6px 10px; border-radius:999px;
+      font-size:13px; color:#cfe2ff;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:14px;
+      margin-top:14px;
+    }
+    @media (max-width: 860px){
+      .grid{grid-template-columns: 1fr;}
+    }
+    .card{
+      background: rgba(16,24,38,.78);
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:16px;
+      box-shadow: 0 18px 60px rgba(0,0,0,.28);
+      backdrop-filter: blur(10px);
+    }
+    .card h2{margin:0 0 10px; font-size:18px}
+    .hint{color:var(--muted); font-size:13.5px; margin-top:-2px}
+    .section{margin-top:12px; padding-top:12px; border-top:1px dashed rgba(33,48,68,.8)}
+    .q{
+      display:grid; gap:8px; margin-top:10px;
+    }
+    label{
+      display:flex; gap:10px; align-items:flex-start;
+      background: rgba(12,18,28,.55);
+      border:1px solid rgba(33,48,68,.7);
+      padding:10px 12px;
+      border-radius:14px;
+      cursor:pointer;
+    }
+    label:hover{border-color: rgba(126,231,135,.55)}
+    input[type="checkbox"], input[type="radio"]{transform: translateY(2px)}
+    .row{display:flex; gap:10px; flex-wrap:wrap}
+    .select{
+      width:100%;
+      background: rgba(12,18,28,.55);
+      color: var(--text);
+      border:1px solid rgba(33,48,68,.7);
+      padding:10px 12px;
+      border-radius:14px;
+      outline:none;
+    }
+    .btnrow{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
+    button{
+      border:1px solid rgba(126,231,135,.4);
+      background: linear-gradient(135deg, rgba(126,231,135,.18), rgba(138,180,255,.12));
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:14px;
+      cursor:pointer;
+      font-weight:600;
+    }
+    button:hover{border-color: rgba(126,231,135,.75)}
+    .ghost{
+      border:1px solid rgba(33,48,68,.9);
+      background: rgba(12,18,28,.45);
+      font-weight:600;
+    }
+    .bar{
+      height:10px; background: rgba(33,48,68,.9);
+      border-radius:999px; overflow:hidden; border:1px solid rgba(33,48,68,1);
+      margin-top:8px;
+    }
+    .bar > div{height:100%; width:0%}
+    .kpis{display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; margin-top:12px}
+    @media (max-width: 560px){ .kpis{grid-template-columns: 1fr;} }
+    .kpi{
+      background: rgba(12,18,28,.55);
+      border:1px solid rgba(33,48,68,.7);
+      border-radius:16px;
+      padding:10px 12px;
+    }
+    .kpi .t{font-size:12.5px; color:var(--muted)}
+    .kpi .v{font-size:16px; font-weight:800; margin-top:6px}
+    .result{
+      display:none;
+      margin-top:12px;
+      padding-top:12px;
+      border-top:1px dashed rgba(33,48,68,.8);
+    }
+    .tag{
+      display:inline-flex; align-items:center; gap:8px;
+      background: rgba(20,35,58,.65);
+      border:1px solid rgba(33,48,68,.9);
+      padding:6px 10px;
+      border-radius:999px;
+      font-weight:700;
+      margin-bottom:10px;
+    }
+    .dot{
+      width:10px; height:10px; border-radius:50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 4px rgba(126,231,135,.12);
+    }
+    .list{margin:8px 0 0 18px}
+    .muted{color:var(--muted)}
+    .callout{
+      background: rgba(12,18,28,.55);
+      border:1px solid rgba(33,48,68,.7);
+      border-radius:16px;
+      padding:12px;
+      margin-top:10px;
+    }
+    .shopgrid{
+      display:grid; grid-template-columns: repeat(2, 1fr); gap:10px; margin-top:10px
+    }
+    @media (max-width: 560px){ .shopgrid{grid-template-columns:1fr} }
+    .shopitem{
+      background: rgba(12,18,28,.55);
+      border:1px solid rgba(33,48,68,.7);
+      border-radius:16px;
+      padding:12px;
+    }
+    .shopitem .name{font-weight:800}
+    .shopitem .why{color:var(--muted); font-size:13px; margin-top:6px}
+    footer{margin-top:18px; color:var(--muted); font-size:13px}
+    .tiny{font-size:12.5px; color:var(--muted)}
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      background: rgba(12,18,28,.7);
+      border:1px solid rgba(33,48,68,.9);
+      padding:2px 6px;
+      border-radius:8px;
+      color:#cfe2ff;
+    }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebApplication",
+    "name":"Silverfish Sense",
+    "applicationCategory":"LifestyleApplication",
+    "description":"A calm, non-lethal silverfish coexistence tool that explains why they're present and how to protect your home without harming them.",
+    "operatingSystem":"All"
+  }
+  </script>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true">🐛</div>
+        <div>
+          <h1>Silverfish Sense</h1>
+          <div class="subtitle">
+            A calm, non-lethal tool to understand why silverfish show up — and how to protect your home <b>without hurting them</b>.
+          </div>
+          <div class="pillrow">
+            <span class="pill">No poisons</span>
+            <span class="pill">No traps</span>
+            <span class="pill">Coexistence-first</span>
+            <span class="pill">Books + clothes safe</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="min-width:260px; max-width:340px;">
+        <h2 style="margin-bottom:6px;">Quick truth</h2>
+        <div class="hint">
+          Silverfish don’t bite or sting. They’re mostly a “humidity + shelter” signal.
+          This tool is educational, not medical/pest advice.
+        </div>
+        <div class="bar" aria-hidden="true"><div id="topBar"></div></div>
+        <div class="tiny" style="margin-top:8px;">Tip: after changes, sightings often fade over 1–3 weeks.</div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <section class="card">
+        <h2>60-second check-in</h2>
+        <div class="hint">Answer honestly. This doesn’t judge you. It just maps what silverfish like.</div>
+
+        <div class="section">
+          <div style="font-weight:800; margin-bottom:6px;">Where have you seen them?</div>
+          <select class="select" id="where">
+            <option value="bathroom">Bathroom / laundry area</option>
+            <option value="kitchen">Kitchen / pantry</option>
+            <option value="basement">Basement / crawlspace / utility room</option>
+            <option value="bedroom">Bedroom / living room</option>
+            <option value="books">Near books / papers / closets</option>
+            <option value="multiple">Multiple rooms</option>
+          </select>
+
+          <div style="font-weight:800; margin:12px 0 6px;">How often lately?</div>
+          <select class="select" id="freq">
+            <option value="once">Just once</option>
+            <option value="monthly">A couple times a month</option>
+            <option value="weekly">A few times a week</option>
+            <option value="daily">Daily or almost daily</option>
+          </select>
+
+          <div class="q">
+            <label><input type="checkbox" id="night" /> Mostly at night / when lights are off</label>
+            <label><input type="checkbox" id="humidity" /> Air feels humid OR you see condensation (windows/pipes)</label>
+            <label><input type="checkbox" id="leak" /> Recent leak/water event OR damp smell</label>
+            <label><input type="checkbox" id="paper" /> You have exposed paper/cardboard storage (boxes, piles)</label>
+            <label><input type="checkbox" id="clutter" /> Lots of tight hiding spots (clutter, dense storage, baseboards gaps)</label>
+            <label><input type="checkbox" id="damage" /> You’ve noticed actual damage to paper/textiles (holes, scraping)</label>
+          </div>
+        </div>
+
+        <div class="btnrow">
+          <button id="btnRun">Get my calm plan</button>
+          <button class="ghost" id="btnReset" type="button">Reset</button>
+          <button class="ghost" id="btnCopy" type="button">Copy results</button>
+        </div>
+
+        <div class="callout" style="margin-top:12px;">
+          <div style="font-weight:800;">Your values, explicitly</div>
+          <div class="muted" style="margin-top:6px;">
+            This site does <b>not</b> recommend killing methods (poisons, traps, sticky boards, DE). It focuses on
+            <b>environment shifts</b> + <b>protecting your items</b> so you can coexist with minimal stress.
+          </div>
+        </div>
+      </section>
+
+      <aside class="card">
+        <h2>Your results</h2>
+        <div class="hint">This updates when you press “Get my calm plan.”</div>
+
+        <div class="kpis">
+          <div class="kpi">
+            <div class="t">Coexistence level</div>
+            <div class="v" id="kpiLevel">—</div>
+          </div>
+          <div class="kpi">
+            <div class="t">Main driver</div>
+            <div class="v" id="kpiDriver">—</div>
+          </div>
+          <div class="kpi">
+            <div class="t">Priority focus</div>
+            <div class="v" id="kpiFocus">—</div>
+          </div>
+        </div>
+
+        <div class="bar" aria-hidden="true"><div id="riskBar"></div></div>
+        <div class="tiny" id="riskNote" style="margin-top:8px;">—</div>
+
+        <div class="result" id="result">
+          <div class="tag"><span class="dot" id="dot"></span><span id="tagText">—</span></div>
+
+          <div id="reassure" class="callout"></div>
+
+          <div class="section">
+            <div style="font-weight:800;">Your non-lethal plan</div>
+            <div class="muted" style="margin-top:6px;">Pick 2–3 steps for a week. Small changes beat big stress.</div>
+            <ul class="list" id="plan"></ul>
+          </div>
+
+          <div class="section">
+            <div style="font-weight:800;">Protect what you care about</div>
+            <ul class="list" id="protect"></ul>
+          </div>
+
+          <div class="section">
+            <div style="font-weight:800;">When to escalate (still non-lethal)</div>
+            <ul class="list" id="escalate"></ul>
+          </div>
+
+          <div class="section">
+            <div style="font-weight:800;">Gentle gear (optional)</div>
+            <div class="muted" style="margin-top:6px;">If you want to support the site, these are harm-free helpers.</div>
+
+            <div class="shopgrid" id="shop">
+              <!-- Filled by JS; replace # links with affiliate links later -->
+            </div>
+
+            <div class="tiny" style="margin-top:10px;">
+              Want a paid add-on? Add a “Download my plan as PDF” button later (easy), or a “room-by-room checklist”.
+            </div>
+          </div>
+        </div>
+
+        <footer>
+          <div><b>Myth check:</b> Seeing silverfish usually doesn’t mean “your home is dirty.” It often means “this spot is comfortably damp or sheltered.”</div>
+          <div style="margin-top:8px;">Keyboard tip: press <span class="kbd">Ctrl</span> + <span class="kbd">F</span> to find “humidity” later.</div>
+        </footer>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    // ---------- scoring + copy ----------
+    function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
+
+    function getInputs(){
+      return {
+        where: document.getElementById('where').value,
+        freq: document.getElementById('freq').value,
+        night: document.getElementById('night').checked,
+        humidity: document.getElementById('humidity').checked,
+        leak: document.getElementById('leak').checked,
+        paper: document.getElementById('paper').checked,
+        clutter: document.getElementById('clutter').checked,
+        damage: document.getElementById('damage').checked
+      };
+    }
+
+    function score(data){
+      // A "conflict score" (how likely you’ll feel bothered / see more), not a kill score.
+      let s = 0;
+
+      // frequency: most important
+      s += ({ once: 8, monthly: 18, weekly: 32, daily: 48 })[data.freq] ?? 18;
+
+      // location weights: signals of moisture vs valuables
+      s += ({ bathroom: 10, kitchen: 16, basement: 18, bedroom: 20, books: 24, multiple: 28 })[data.where] ?? 14;
+
+      // drivers
+      if (data.humidity) s += 14;
+      if (data.leak) s += 18;
+      if (data.paper) s += 10;
+      if (data.clutter) s += 8;
+      if (data.damage) s += 18;
+      if (data.night) s += 4;
+
+      // clamp to 0-100
+      s = clamp(s, 0, 100);
+
+      // choose driver
+      let driver = "Shelter";
+      const driverScores = [
+        {k:"Humidity", v:(data.humidity?1:0) + (data.leak?1:0) + ((data.where==="bathroom"||data.where==="basement")?1:0)},
+        {k:"Paper/food attraction", v:(data.paper?1:0) + ((data.where==="books"||data.where==="kitchen")?1:0)},
+        {k:"Open pathways", v:(data.clutter?1:0) + ((data.where==="multiple")?1:0) + ((data.where==="bedroom")?1:0)}
+      ];
+      driverScores.sort((a,b)=>b.v-a.v);
+      if (driverScores[0].v>0) driver = driverScores[0].k;
+
+      // focus
+      let focus = "Lower humidity";
+      if (driver === "Paper/food attraction") focus = "Protect stored items";
+      if (driver === "Open pathways") focus = "Reduce hiding spots";
+
+      // coexistence level labels
+      let level = "Low-impact coexistence";
+      if (s >= 35) level = "Manageable overlap";
+      if (s >= 65) level = "High-conflict zone";
+
+      return { s, driver, focus, level };
+    }
+
+    function paletteFor(score){
+      if (score < 35) return {color:"var(--accent)", dot:"var(--accent)", label:"LOW", note:"This looks like normal, occasional overlap. Small environmental tweaks usually reduce sightings."};
+      if (score < 65) return {color:"var(--warn)", dot:"var(--warn)", label:"MODERATE", note:"You’ll likely see them again unless you shift moisture/shelter and protect key items."};
+      return {color:"var(--risk)", dot:"var(--risk)", label:"HIGH", note:"This environment is very comfortable for them, or your valuables are exposed. Focus on habitat shift + item protection."};
+    }
+
+    function buildCopy(data, meta){
+      // reassurance + plan
+      const reassureBits = [];
+      reassureBits.push(`<div style="font-weight:800; margin-bottom:6px;">Risk signal: <span style="color:${paletteFor(meta.s).color}; font-weight:900">${paletteFor(meta.s).label}</span> — but calm.</div>`);
+      reassureBits.push(`<div class="muted">Silverfish are ancient little recyclers. They’re mostly telling you: “this area is sheltered, and maybe a bit humid.” They don’t bite or infest people.</div>`);
+
+      // tailored reassurance
+      if (data.freq === "once" && (data.where==="bathroom" || data.where==="basement")){
+        reassureBits.push(`<div style="margin-top:10px;"><b>One sighting in a damp-ish room</b> is extremely common — especially in apartments and older buildings.</div>`);
+      }
+      if (data.where === "books"){
+        reassureBits.push(`<div style="margin-top:10px;"><b>Books/paper area</b> doesn’t mean disaster — it means “protect your paper storage” and gently dry the microclimate.</div>`);
+      }
+      if (data.leak){
+        reassureBits.push(`<div style="margin-top:10px;"><b>Water events</b> are the strongest magnet. If you can dry that zone out, sightings often drop noticeably.</div>`);
+      }
+      if (data.damage){
+        reassureBits.push(`<div style="margin-top:10px;"><b>Possible damage noted:</b> that’s your cue to prioritize protecting items (sealed storage) while you adjust humidity/shelter.</div>`);
+      }
+
+      // plan steps (non-lethal)
+      const plan = [];
+      // always good
+      plan.push("Do a 7-day “microclimate reset”: improve airflow (fan/vent) for 10–20 minutes after showers or cooking.");
+      plan.push("Vacuum along baseboards and behind/under bathroom and kitchen fixtures (removes crumbs and shed material).");
+
+      if (data.humidity || data.where==="bathroom" || data.where==="basement"){
+        plan.push("Aim for ~40–50% indoor humidity if you can (comfort for humans, less ideal for silverfish). A hygrometer helps you *see* progress.");
+        plan.push("Dry the quiet damp zones: under-sink cabinet, behind toilet, around laundry, inside closets on exterior walls.");
+      } else {
+        plan.push("Check for hidden humidity: under sinks, behind appliances, window condensation, closet corners.");
+      }
+
+      if (data.paper || data.where==="books"){
+        plan.push("Move paper/cardboard off floors and away from exterior walls; switch to sealed bins or lidded containers.");
+      }
+
+      if (data.clutter || data.where==="multiple"){
+        plan.push("Reduce hiding seams: tidy dense piles, seal obvious gaps around baseboards/pipe penetrations (simple caulk/foam where appropriate).");
+      }
+
+      if (data.leak){
+        plan.push("If there was a leak: dry fast (fans + airflow). Consider a moisture meter if you want certainty.");
+      }
+
+      // protection steps
+      const protect = [];
+      protect.push("Books/papers: store in lidded bins, book boxes, or closed cabinets; keep shelves a few cm off exterior walls if possible.");
+      protect.push("Clothes/linens: keep the floor clear, store off the ground, and avoid long-term cardboard storage.");
+      protect.push("Food/pantry: use jars or sealed containers; wipe crumbs and keep pet food sealed overnight.");
+      if (data.where==="kitchen"){
+        protect.push("Kitchen-specific: check gaps under sink and around dishwasher/fridge; keep that zone dry and crumb-free.");
+      }
+      if (data.where==="bathroom"){
+        protect.push("Bathroom-specific: run fan longer, squeegee shower walls if you can, and keep towels drying with airflow.");
+      }
+
+      // escalation (still non-lethal)
+      const escalate = [];
+      escalate.push("If daily sightings continue after 2–3 weeks of drying + storage: look for a persistent moisture source (slow leak, poor ventilation, damp wall).");
+      escalate.push("If you rent: document humidity/condensation and ask for ventilation or leak inspection (this is building health, not a cleanliness issue).");
+      escalate.push("If you want a “boundary” without harm: focus on sealing entry gaps and making preferred zones (bathroom/basement) less damp.");
+
+      // gentle gear
+      const shop = [];
+      // note: keep links placeholders so you can add affiliate later
+      shop.push({name:"Hygrometer (humidity meter)", why:"Turns anxiety into data. You’ll know if you’re actually drying the space."});
+      shop.push({name:"Small dehumidifier", why:"A gentle, non-lethal habitat shift for bathrooms, closets, basements."});
+      shop.push({name:"Sealed storage bins / book boxes", why:"Protects books and papers without harming any insects."});
+      shop.push({name:"Draft stopper / simple caulk kit", why:"Reduces pathways and hiding seams; better boundaries, fewer surprise sightings."});
+
+      return { reassureHTML: reassureBits.join(""), plan, protect, escalate, shop };
+    }
+
+    function render(){
+      const data = getInputs();
+      const meta = score(data);
+      const pal = paletteFor(meta.s);
+
+      // top bar just a vibe indicator
+      const topBar = document.getElementById('topBar');
+      topBar.style.width = (meta.s) + "%";
+      topBar.style.background = pal.color;
+
+      // KPI
+      document.getElementById('kpiLevel').textContent = meta.level;
+      document.getElementById('kpiDriver').textContent = meta.driver;
+      document.getElementById('kpiFocus').textContent = meta.focus;
+
+      // risk bar
+      const riskBar = document.getElementById('riskBar');
+      riskBar.style.width = meta.s + "%";
+      riskBar.style.background = pal.color;
+      document.getElementById('riskNote').textContent = pal.note;
+
+      // tag + dot
+      document.getElementById('dot').style.background = pal.dot;
+      document.getElementById('dot').style.boxShadow = `0 0 0 4px ${pal.dot.replace("var(--","rgba(").includes("rgba(") ? "rgba(126,231,135,.12)" : "rgba(126,231,135,.12)"}`;
+      document.getElementById('tagText').textContent = `Coexistence signal: ${pal.label} (${meta.s}/100)`;
+
+      const copy = buildCopy(data, meta);
+
+      // reassurance
+      const r = document.getElementById('reassure');
+      r.innerHTML = copy.reassureHTML;
+
+      // lists
+      const planEl = document.getElementById('plan');
+      planEl.innerHTML = "";
+      copy.plan.forEach(x=>{
+        const li=document.createElement('li');
+        li.textContent=x;
+        planEl.appendChild(li);
+      });
+
+      const protectEl = document.getElementById('protect');
+      protectEl.innerHTML = "";
+      copy.protect.forEach(x=>{
+        const li=document.createElement('li');
+        li.textContent=x;
+        protectEl.appendChild(li);
+      });
+
+      const escEl = document.getElementById('escalate');
+      escEl.innerHTML = "";
+      copy.escalate.forEach(x=>{
+        const li=document.createElement('li');
+        li.textContent=x;
+        escEl.appendChild(li);
+      });
+
+      // shop
+      const shopEl = document.getElementById('shop');
+      shopEl.innerHTML = "";
+      copy.shop.forEach(item=>{
+        const div = document.createElement('div');
+        div.className = "shopitem";
+        div.innerHTML = `
+          <div class="name">${item.name}</div>
+          <div class="why">${item.why}</div>
+          <div style="margin-top:10px;">
+            <a href="#" onclick="return false;" class="tiny">Add your affiliate link →</a>
+          </div>
+        `;
+        shopEl.appendChild(div);
+      });
+
+      document.getElementById('result').style.display = "block";
+      window.__lastResult = { data, meta, pal, copy };
+    }
+
+    function resetAll(){
+      document.getElementById('where').value = "bathroom";
+      document.getElementById('freq').value = "once";
+      ["night","humidity","leak","paper","clutter","damage"].forEach(id=>document.getElementById(id).checked=false);
+      document.getElementById('result').style.display = "none";
+      document.getElementById('kpiLevel').textContent = "—";
+      document.getElementById('kpiDriver').textContent = "—";
+      document.getElementById('kpiFocus').textContent = "—";
+      document.getElementById('riskNote').textContent = "—";
+      document.getElementById('riskBar').style.width = "0%";
+      document.getElementById('topBar').style.width = "0%";
+      window.__lastResult = null;
+    }
+
+    async function copyResults(){
+      if (!window.__lastResult){
+        alert("Run the tool first.");
+        return;
+      }
+      const { data, meta, pal } = window.__lastResult;
+      const lines = [
+        "Silverfish Sense — results",
+        `Coexistence signal: ${pal.label} (${meta.s}/100)`,
+        `Level: ${meta.level}`,
+        `Main driver: ${meta.driver}`,
+        `Priority focus: ${meta.focus}`,
+        "",
+        "Your inputs:",
+        `Where: ${data.where}`,
+        `Frequency: ${data.freq}`,
+        `Night: ${data.night ? "yes" : "no"}`,
+        `Humidity clues: ${data.humidity ? "yes" : "no"}`,
+        `Leak/water event: ${data.leak ? "yes" : "no"}`,
+        `Paper exposure: ${data.paper ? "yes" : "no"}`,
+        `Hiding spots: ${data.clutter ? "yes" : "no"}`,
+        `Damage noticed: ${data.damage ? "yes" : "no"}`,
+        "",
+        "Note: This is coexistence-first and non-lethal."
+      ].join("\n");
+
+      try{
+        await navigator.clipboard.writeText(lines);
+        alert("Copied to clipboard.");
+      }catch(e){
+        // fallback
+        const ta=document.createElement("textarea");
+        ta.value=lines;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+        alert("Copied to clipboard.");
+      }
+    }
+
+    document.getElementById('btnRun').addEventListener('click', render);
+    document.getElementById('btnReset').addEventListener('click', resetAll);
+    document.getElementById('btnCopy').addEventListener('click', copyResults);
+
+    // initialize
+    resetAll();
+  </script>
+</body>
+</html>
