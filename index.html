@@ -18,6 +18,7 @@
   <meta name="twitter:title" content="Silverfish Sense — Coexistence Tool" />
   <meta name="twitter:description" content="A calm, non-lethal plan for living with silverfish while protecting books, clothes, and food." />
   <meta name="twitter:image" content="https://dizzlkheinz.github.io/silverfish-sense/assets/og-image.png" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path d='M8 34c8-16 28-22 45-11 5 3 5 5 0 8-17 11-37 6-45 3z' fill='%2352f7ff'/><circle cx='16' cy='32' r='2' fill='%230b0033'/></svg>">
   <style>
     :root{
       --bg:#0a0024;
@@ -46,6 +47,7 @@
       background-attachment: fixed;
       color:var(--text);
       line-height:1.45;
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='18' viewBox='0 0 32 18'%3E%3Cpath d='M1 4C0 2 0 1 0 0' fill='none' stroke='%2352f7ff' stroke-width='1'/%3E%3Cpath d='M1 14c-1 2-1 3-1 4' fill='none' stroke='%2352f7ff' stroke-width='1'/%3E%3Cpath d='M2 9c4-8 14-10 22-5 2 1 2 2 0 3-8 5-18 3-22 2z' fill='%2352f7ff' stroke='%230a0024' stroke-width='1'/%3E%3Ccircle cx='6' cy='8' r='1' fill='%230a0024'/%3E%3C/svg%3E") 0 9, auto;
     }
     a{color:var(--link); text-decoration:none}
     a:hover{text-decoration:underline}
@@ -194,7 +196,7 @@
       margin-top:10px;
     }
     .shopgrid{
-      display:grid; grid-template-columns: repeat(2, 1fr); gap:10px; margin-top:10px
+      display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:10px; margin-top:10px
     }
     @media (max-width: 560px){ .shopgrid{grid-template-columns:1fr} }
     .shopitem{
@@ -338,7 +340,33 @@
       letter-spacing:.05em;
     }
     @media (prefers-reduced-motion: reduce){
-      .marquee marquee{scroll-behavior:auto}
+      marquee{overflow:hidden;white-space:nowrap;text-align:center}
+    }
+    input:focus-visible, select:focus-visible, button:focus-visible{
+      outline:2px solid var(--neon-cyan);
+      outline-offset:2px;
+    }
+    .webring{
+      margin-top:24px;
+      text-align:center;
+      border:2px dashed var(--neon-pink);
+      background: linear-gradient(135deg, rgba(255,106,213,.12), rgba(82,247,255,.12));
+      padding:14px;
+      border-radius:18px;
+      font-family: "Courier New", "Lucida Console", monospace;
+    }
+    .webring a{
+      color:var(--neon-cyan);
+      padding:0 6px;
+    }
+    .webring a:hover{text-decoration:underline}
+    .webring .ring-title{
+      font-weight:800;
+      color:var(--neon-yellow);
+      text-transform:uppercase;
+      letter-spacing:.1em;
+      margin-bottom:8px;
+      text-shadow:0 0 8px rgba(255,230,106,.6);
     }
   </style>
   <script type="application/ld+json">
@@ -385,7 +413,8 @@
           </div>
           <div class="badge-row">
             <span class="blink">Under Construction</span>
-            <span class="counter" id="visitCounter">Visitors: 000001</span>
+            <span class="counter" id="visitCounter" title="This counts YOUR visits. You are the community.">Visitors: 000001</span>
+            <span class="counter">Est. 1997</span>
             <span class="counter">Updated: Feb 7, 2026</span>
           </div>
         </div>
@@ -408,15 +437,15 @@
       </div>
       <div class="gallery">
         <figure class="polaroid tilt-1">
-          <img src="assets/silverfish-1.jpg" alt="Silverfish on a pale surface, photographed from above" loading="lazy" />
+          <img src="assets/silverfish-1.jpg" alt="Silverfish on a pale surface, photographed from above" loading="lazy" width="300" height="200" />
           <figcaption>Here’s one I spotted in my bathroom!! So cute!!</figcaption>
         </figure>
         <figure class="polaroid tilt-2">
-          <img src="assets/silverfish-2.jpg" alt="Close-up of a silverfish on rough stone" loading="lazy" />
+          <img src="assets/silverfish-2.jpg" alt="Close-up of a silverfish on rough stone" loading="lazy" width="300" height="200" />
           <figcaption>Found this lil one on a white countertop — tiny zoom!</figcaption>
         </figure>
         <figure class="polaroid tilt-3">
-          <img src="assets/silverfish-3.jpg" alt="Silverfish with long antennae photographed on a dark surface" loading="lazy" />
+          <img src="assets/silverfish-3.jpg" alt="Silverfish with long antennae photographed on a dark surface" loading="lazy" width="300" height="200" />
           <figcaption>Look at those antennae!! Classic silverfish vibes.</figcaption>
         </figure>
         <figure class="polaroid tilt-2">
@@ -481,16 +510,23 @@
       <div class="callout">
         <div style="font-weight:800;">Guestbook entries</div>
         <ul class="list">
-          <li><b>Skitterfan42</b>: “Glimmer is adorable. I, too, enjoy humidity.”</li>
-          <li><b>BookWarden</b>: “Thanks for the calm plan — my library feels safer already.”</li>
-          <li><b>BasementDweller</b>: “Signed with damp hands. Respect to the silverfish.”</li>
+          <li><b>Skitterfan42</b>: "Glimmer is adorable. I, too, enjoy humidity."</li>
+          <li><b>BookWarden</b>: "Thanks for the calm plan — my library feels safer already."</li>
+          <li><b>BasementDweller</b>: "Signed with damp hands. Respect to the silverfish."</li>
+          <li><b>MoistBasement99</b>: "My hygrometer arrived. Turns out my bathroom is basically a rainforest. Thank you."</li>
+          <li><b>GlimmerStan</b>: "I showed this site to my silverfish. She didn't react but I could tell she appreciated it."</li>
+          <li><b>SilverfishWhisperer</b>: "Named all seven of mine. They have not acknowledged me yet."</li>
         </ul>
+      </div>
+      <div class="callout" style="margin-top:10px; text-align:center;">
+        <div style="font-weight:800; color:var(--neon-yellow);">*** New entries offline for maintenance ***</div>
+        <div class="muted" style="margin-top:4px;">Our GuestBook 2000 server is being migrated. Check back soon!</div>
       </div>
     </section>
 
     <section class="card" aria-label="Gentle gear">
-      <h2>Gentle gear</h2>
-      <div class="muted" style="margin-top:6px;">If you want to support the site, these are harm-free helpers.</div>
+      <h2>~*~ Cool Links &amp; Gear ~*~</h2>
+      <div class="muted" style="margin-top:6px;">If you want to support the site, these are harm-free helpers. All links verified bug-safe!</div>
       <div class="shopgrid" id="shop">
         <!-- Filled by JS -->
       </div>
@@ -604,6 +640,18 @@
         </footer>
       </aside>
     </div>
+
+    <nav class="webring" aria-label="Webring navigation">
+      <div class="ring-title">~ Insect Appreciation Webring ~</div>
+      <div>
+        <a href="#" onclick="return false;">&#9664; Previous</a>
+        |
+        <a href="#" onclick="return false;">Random</a>
+        |
+        <a href="#" onclick="return false;">Next &#9654;</a>
+      </div>
+      <div class="tiny" style="margin-top:8px;">Member site #47 of 203</div>
+    </nav>
   </div>
 
   <script>
@@ -792,6 +840,21 @@
       document.getElementById('dot').style.boxShadow = `0 0 0 4px ${pal.dot.replace("var(--","rgba(").includes("rgba(") ? "rgba(126,231,135,.12)" : "rgba(126,231,135,.12)"}`;
       document.getElementById('tagText').textContent = `Coexistence signal: ${pal.label} (${meta.s}/100)`;
 
+      // fun compatibility line
+      const compat = meta.s < 35 ? "Casual roommates — they barely know you exist."
+                    : meta.s < 65 ? "Co-tenants — you're aware of each other and that's OK."
+                    : "Committed cohabitants — you're basically family at this point.";
+      let compatEl = document.getElementById('compatLine');
+      if (!compatEl){
+        compatEl = document.createElement('div');
+        compatEl.id = 'compatLine';
+        compatEl.className = 'callout';
+        compatEl.style.marginTop = '10px';
+        compatEl.style.textAlign = 'center';
+        document.getElementById('tagText').parentNode.after(compatEl);
+      }
+      compatEl.innerHTML = `<div style="font-weight:800;font-size:13px;color:var(--neon-yellow);">Silverfish compatibility:</div><div style="margin-top:4px;">${compat}</div>`;
+
       const copy = buildCopy(data, meta);
 
       // reassurance
@@ -840,7 +903,7 @@
           ? item.links.map(l=>`<a href="${l.href}" class="tiny" target="_blank" rel="noopener noreferrer">${l.label} link →</a>`).join(" ")
           : `<a href="#" onclick="return false;" class="tiny">Add your affiliate link →</a>`;
         div.innerHTML = `
-          <div class="name">${item.name}</div>
+          <div class="name"><span style="color:var(--neon-yellow);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin-right:6px;">NEW!</span>${item.name}</div>
           <div class="why">${item.why}</div>
           <div style="margin-top:10px;">
             ${links}
@@ -864,6 +927,8 @@
       document.getElementById('riskBar').style.width = "0%";
       document.getElementById('topBar').style.width = "0%";
       window.__lastResult = null;
+      const compat = document.getElementById('compatLine');
+      if (compat) compat.remove();
     }
 
     async function copyResults(){
