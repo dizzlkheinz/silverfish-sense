@@ -466,6 +466,99 @@
       margin-top:10px;
     }
     .hidden-entry.revealed{display:block}
+    .idle-fish{
+      position:fixed;
+      width:36px;
+      height:14px;
+      z-index:9998;
+      pointer-events:none;
+      opacity:0;
+      transition:opacity .8s, transform .8s;
+    }
+    .idle-fish.visible{opacity:1;transform:translate(0,0)!important}
+    @keyframes wiggle{
+      0%,100%{transform:rotate(0deg)}
+      25%{transform:rotate(-6deg)}
+      75%{transform:rotate(6deg)}
+    }
+    @keyframes flipfish{
+      0%{transform:scaleY(1)}
+      50%{transform:scaleY(-1)}
+      100%{transform:scaleY(1)}
+    }
+    .fishsvg.wiggling{animation:wiggle .4s ease 3}
+    .fishsvg.flipped{animation:flipfish .6s ease}
+    .fishsvg.purring{
+      filter:drop-shadow(0 0 14px rgba(125,255,178,.7)) drop-shadow(0 0 28px rgba(82,247,255,.5));
+      transition:filter .3s;
+    }
+    .name-gen{
+      margin-top:12px;
+      text-align:center;
+    }
+    .name-gen .generated-name{
+      font-size:20px;
+      font-weight:800;
+      color:var(--neon-cyan);
+      text-shadow:0 0 10px rgba(82,247,255,.6);
+      margin-top:8px;
+      min-height:28px;
+    }
+    .name-gen button{
+      border:2px solid var(--neon-pink);
+      background:linear-gradient(135deg, rgba(255,106,213,.25), rgba(82,247,255,.2));
+      box-shadow:0 0 10px rgba(255,106,213,.4);
+      text-transform:uppercase;
+      letter-spacing:.06em;
+    }
+    .awards{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:center;
+      margin-top:12px;
+    }
+    .award{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:88px;
+      height:31px;
+      font-family:"Courier New","Lucida Console",monospace;
+      font-size:7px;
+      line-height:1.1;
+      text-align:center;
+      text-transform:uppercase;
+      padding:2px 4px;
+      border-radius:4px;
+      box-shadow:0 0 8px rgba(82,247,255,.3);
+    }
+    .award-1{
+      background:linear-gradient(135deg,#c0c0c0,#fff,#c0c0c0);
+      border:2px solid #999;
+      color:#222;
+    }
+    .award-2{
+      background:linear-gradient(135deg,#ffd700,#fff8dc,#ffd700);
+      border:2px solid #b8860b;
+      color:#333;
+    }
+    .award-3{
+      background:linear-gradient(135deg,#0b0033,#1e0b5a);
+      border:2px solid var(--neon-green);
+      color:var(--neon-green);
+    }
+    .award-4{
+      background:linear-gradient(135deg,#1a0505,#3a0a0a);
+      border:2px solid #ff4444;
+      color:#ff6666;
+    }
+    .award-5{
+      background:linear-gradient(135deg,#050520,#0a0a3a);
+      border:2px solid var(--neon-cyan);
+      color:var(--neon-cyan);
+    }
+    .seasonal-acc{fill:none;stroke-linecap:round;stroke-linejoin:round}
   </style>
   <script type="application/ld+json">
   {
@@ -563,6 +656,7 @@
             <path class="antenna" d="M32 40c-18-8-26-18-30-30"/>
             <path class="antenna" d="M32 48c-18 8-26 18-30 30"/>
             <path d="M200 36l28-12-8 16 12 6-12 6 8 16-28-12" fill="#1b0a44"/>
+            <g id="seasonalAcc" class="seasonal-acc"></g>
           </svg>
           <figcaption>Site mascot: Glimmer the Silverfish.</figcaption>
         </figure>
@@ -576,6 +670,27 @@
       </div>
       <div class="btnrow">
         <button type="button" class="audio-btn" id="ambientBtn">Click for ambient silverfish sounds</button>
+      </div>
+    </section>
+
+    <section class="card" aria-label="Name your silverfish">
+      <h2>Name your silverfish</h2>
+      <div class="hint">Every silverfish deserves a name. Generate one for yours.</div>
+      <div class="name-gen">
+        <button type="button" id="nameGenBtn">Generate a name</button>
+        <div class="generated-name" id="generatedName"></div>
+      </div>
+    </section>
+
+    <section class="card" aria-label="Awards">
+      <h2>~*~ Awards &amp; Recognition ~*~</h2>
+      <div class="hint">Proudly displayed since 1997.</div>
+      <div class="awards">
+        <div class="award award-1">Silver Web Award 1998</div>
+        <div class="award award-2">Top 5% of All Insect Sites</div>
+        <div class="award award-3">CoolBugz Seal of Approval</div>
+        <div class="award award-4">No Bugs Were Harmed Award</div>
+        <div class="award award-5">Webmaster's Choice Q3 '99</div>
       </div>
     </section>
 
@@ -1345,6 +1460,167 @@
         }
       }, { threshold: 0.5 });
       observer.observe(webring);
+    })();
+
+    // Idle silverfish — emerge from card edges after 30s of no mouse movement
+    (function(){
+      const FISH_SVG = '<svg viewBox="0 0 32 18" xmlns="http://www.w3.org/2000/svg"><path d="M1 4C0 2 0 1 0 0" fill="none" stroke="#52f7ff" stroke-width="1"/><path d="M1 14c-1 2-1 3-1 4" fill="none" stroke="#52f7ff" stroke-width="1"/><path d="M2 9c4-8 14-10 22-5 2 1 2 2 0 3-8 5-18 3-22 2z" fill="#52f7ff" stroke="#0a0024" stroke-width="1"/><circle cx="6" cy="8" r="1" fill="#0a0024"/></svg>';
+      let idleTimer = null;
+      let idleFish = [];
+
+      function spawnIdleFish(){
+        const cards = document.querySelectorAll('.card');
+        const picks = Array.from(cards).sort(()=>Math.random()-.5).slice(0,3);
+        picks.forEach(card=>{
+          const rect = card.getBoundingClientRect();
+          const el = document.createElement('div');
+          el.className = 'idle-fish';
+          el.innerHTML = FISH_SVG;
+          // pick an edge
+          const edge = Math.floor(Math.random()*4);
+          if (edge === 0){ // top
+            el.style.left = (rect.left + Math.random()*rect.width*.6 + rect.width*.2) + 'px';
+            el.style.top = (rect.top + window.scrollY - 4) + 'px';
+            el.style.transform = 'translateY(-14px)';
+            el.style.position = 'absolute';
+          } else if (edge === 1){ // right
+            el.style.left = (rect.right - 8) + 'px';
+            el.style.top = (rect.top + window.scrollY + Math.random()*rect.height*.6 + rect.height*.2) + 'px';
+            el.style.transform = 'translateX(30px)';
+            el.style.position = 'absolute';
+          } else if (edge === 2){ // bottom
+            el.style.left = (rect.left + Math.random()*rect.width*.6 + rect.width*.2) + 'px';
+            el.style.top = (rect.bottom + window.scrollY - 10) + 'px';
+            el.style.transform = 'translateY(14px)';
+            el.style.position = 'absolute';
+          } else { // left
+            el.style.left = (rect.left - 20) + 'px';
+            el.style.top = (rect.top + window.scrollY + Math.random()*rect.height*.6 + rect.height*.2) + 'px';
+            el.style.transform = 'translateX(-30px) scaleX(-1)';
+            el.style.position = 'absolute';
+          }
+          document.body.appendChild(el);
+          idleFish.push(el);
+          requestAnimationFrame(()=>el.classList.add('visible'));
+        });
+      }
+
+      function retreatIdleFish(){
+        idleFish.forEach(el=>{
+          el.classList.remove('visible');
+          setTimeout(()=>el.remove(), 900);
+        });
+        idleFish = [];
+      }
+
+      function resetIdle(){
+        clearTimeout(idleTimer);
+        if (idleFish.length) retreatIdleFish();
+        idleTimer = setTimeout(spawnIdleFish, 30000);
+      }
+
+      document.addEventListener('mousemove', resetIdle);
+      document.addEventListener('keydown', resetIdle);
+      resetIdle();
+    })();
+
+    // Glimmer pet interaction — click: wiggle, double-click: flip, hold: purr
+    (function(){
+      const svg = document.querySelector('.fishsvg');
+      if (!svg) return;
+      svg.style.cursor = 'pointer';
+      let holdTimer = null;
+      let isPurring = false;
+
+      svg.addEventListener('click', (e)=>{
+        if (isPurring) return;
+        svg.classList.remove('wiggling');
+        void svg.offsetWidth;
+        svg.classList.add('wiggling');
+        svg.addEventListener('animationend', ()=>svg.classList.remove('wiggling'), {once:true});
+      });
+
+      svg.addEventListener('dblclick', (e)=>{
+        e.preventDefault();
+        svg.classList.remove('flipped');
+        void svg.offsetWidth;
+        svg.classList.add('flipped');
+        svg.addEventListener('animationend', ()=>svg.classList.remove('flipped'), {once:true});
+      });
+
+      svg.addEventListener('mousedown', ()=>{
+        holdTimer = setTimeout(()=>{
+          isPurring = true;
+          svg.classList.add('purring');
+          // quiet the ambient sound if playing
+          if (ambientOn && gainNode){
+            gainNode.gain.linearRampToValueAtTime(0.02, audioCtx.currentTime + 0.5);
+          }
+        }, 600);
+      });
+
+      const stopPurr = ()=>{
+        clearTimeout(holdTimer);
+        if (isPurring){
+          svg.classList.remove('purring');
+          isPurring = false;
+          if (ambientOn && gainNode){
+            gainNode.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 0.5);
+          }
+        }
+      };
+      svg.addEventListener('mouseup', stopPurr);
+      svg.addEventListener('mouseleave', stopPurr);
+    })();
+
+    // Name your silverfish generator
+    (function(){
+      const adjectives = [
+        'Dapper','Shimmery','Damp','Speedy','Cozy','Dusty','Glittery','Velvet',
+        'Bashful','Nimble','Mossy','Dewy','Plucky','Silky','Twilight','Whispery',
+        'Moonlit','Cryptic','Ancient','Gentle','Luminous','Stealthy','Tiny','Wiggly'
+      ];
+      const names = [
+        'Reginald','Beatrice','Cornelius','Prudence','Humphrey','Mildred','Archibald',
+        'Gertrude','Percival','Winifred','Barnaby','Eugenia','Thaddeus','Henrietta',
+        'Mortimer','Clementine','Bartholomew','Agatha','Eustace','Rosalind','Gideon','Maude'
+      ];
+      const btn = document.getElementById('nameGenBtn');
+      const out = document.getElementById('generatedName');
+      if (!btn || !out) return;
+      btn.addEventListener('click', ()=>{
+        const a = adjectives[Math.floor(Math.random()*adjectives.length)];
+        const n = names[Math.floor(Math.random()*names.length)];
+        out.textContent = a + ' ' + n;
+      });
+    })();
+
+    // Seasonal Glimmer — accessory based on current month
+    (function(){
+      const acc = document.getElementById('seasonalAcc');
+      if (!acc) return;
+      const month = new Date().getMonth(); // 0-11
+      if (month >= 11 || month <= 1){
+        // Winter: scarf
+        acc.innerHTML = '<path d="M55 35c4-2 10-2 14 0" stroke="#ff6ad5" stroke-width="3" fill="none"/>'
+          + '<path d="M69 35c2 1 3 4 2 8" stroke="#ff6ad5" stroke-width="3" fill="none"/>'
+          + '<path d="M66 35c2 1 3 4 2 8" stroke="#ff6ad5" stroke-width="2.5" fill="none" opacity=".6"/>';
+      } else if (month >= 2 && month <= 4){
+        // Spring: flower on head
+        acc.innerHTML = '<circle cx="42" cy="32" r="4" fill="#ff6ad5" opacity=".8"/>'
+          + '<circle cx="42" cy="32" r="2" fill="#ffe66a"/>'
+          + '<path d="M42 28c0-4 1-6 1-8" stroke="#7dffb2" stroke-width="1.5" fill="none"/>';
+      } else if (month >= 5 && month <= 7){
+        // Summer: sunglasses
+        acc.innerHTML = '<rect x="34" y="39" width="8" height="5" rx="2" fill="#111" opacity=".85"/>'
+          + '<rect x="44" y="39" width="8" height="5" rx="2" fill="#111" opacity=".85"/>'
+          + '<path d="M42 41h2" stroke="#111" stroke-width="1.5"/>'
+          + '<path d="M34 41h-3" stroke="#111" stroke-width="1.5"/>';
+      } else {
+        // Fall: leaf on back
+        acc.innerHTML = '<path d="M100 30c-6-4-4-10 2-12 6 2 8 8 2 12z" fill="#ffe66a" opacity=".7"/>'
+          + '<path d="M102 18c0 6-1 10-2 12" stroke="#b8860b" stroke-width="1" fill="none"/>';
+      }
     })();
   </script>
 </body>
