@@ -285,14 +285,17 @@
       margin-top:12px;
     }
     .stamp{
-      display:inline-flex; align-items:center; justify-content:center;
+      display:flex; align-items:center; justify-content:center;
+      width:88px; height:31px;
       font-family: "Courier New", "Lucida Console", monospace;
-      font-size:11px;
-      padding:6px 8px;
+      font-size:9px;
+      line-height:1.05;
+      padding:2px 4px;
       background: linear-gradient(135deg, #0b0033, #1e0b5a);
       border:2px solid var(--neon-cyan);
       color: var(--neon-cyan);
       text-transform:uppercase;
+      text-align:center;
       box-shadow: 0 0 10px rgba(82,247,255,.35);
     }
     .fishsvg{
@@ -316,6 +319,14 @@
       stroke: #111;
       stroke-width:3;
       stroke-linecap:round;
+    }
+    .audio-btn{
+      margin-top:12px;
+      border:2px solid var(--neon-green);
+      background: linear-gradient(135deg, rgba(125,255,178,.35), rgba(82,247,255,.25));
+      box-shadow: 0 0 12px rgba(125,255,178,.5);
+      text-transform:uppercase;
+      letter-spacing:.05em;
     }
     @media (prefers-reduced-motion: reduce){
       .marquee marquee{scroll-behavior:auto}
@@ -389,15 +400,15 @@
       <div class="gallery">
         <figure class="polaroid tilt-1">
           <img src="assets/silverfish-1.jpg" alt="Silverfish on a pale surface, photographed from above" loading="lazy" />
-          <figcaption>Silverfish in the wild.</figcaption>
+          <figcaption>Here’s one I spotted in my bathroom!! So cute!!</figcaption>
         </figure>
         <figure class="polaroid tilt-2">
           <img src="assets/silverfish-2.jpg" alt="Close-up of a silverfish on rough stone" loading="lazy" />
-          <figcaption>Silverfish on a white surface.</figcaption>
+          <figcaption>Found this lil one on a white countertop — tiny zoom!</figcaption>
         </figure>
         <figure class="polaroid tilt-3">
           <img src="assets/silverfish-3.jpg" alt="Silverfish with long antennae photographed on a dark surface" loading="lazy" />
-          <figcaption>Long antennae, classic look.</figcaption>
+          <figcaption>Look at those antennae!! Classic silverfish vibes.</figcaption>
         </figure>
         <figure class="polaroid tilt-2">
           <svg class="fishsvg" viewBox="0 0 240 90" role="img" aria-label="Silverfish SVG mascot">
@@ -427,6 +438,9 @@
         <span class="stamp">Calm Plan</span>
         <span class="stamp">Book Safe</span>
       </div>
+      <div class="btnrow">
+        <button type="button" class="audio-btn" id="ambientBtn">Click for ambient silverfish sounds</button>
+      </div>
     </section>
 
     <section class="card" aria-label="Silverfish facts">
@@ -451,6 +465,30 @@
         <li>They can live as long as the average marriage lasts, which is long-term companionship energy.</li>
         <li>Adorable, in a tiny ancient-dinosaur way.</li>
       </ul>
+    </section>
+
+    <section class="card" aria-label="Guestbook">
+      <h2>Sign my guestbook!</h2>
+      <div class="hint">A classic Geocities rite. This one is a cozy, static tribute.</div>
+      <div class="callout">
+        <div style="font-weight:800;">Guestbook entries</div>
+        <ul class="list">
+          <li><b>Skitterfan42</b>: “Glimmer is adorable. I, too, enjoy humidity.”</li>
+          <li><b>BookWarden</b>: “Thanks for the calm plan — my library feels safer already.”</li>
+          <li><b>BasementDweller</b>: “Signed with damp hands. Respect to the silverfish.”</li>
+        </ul>
+      </div>
+      <div class="section">
+        <div style="font-weight:800; margin-bottom:6px;">Add your message (decorative)</div>
+        <div class="row">
+          <input class="select" type="text" placeholder="Name or handle" aria-label="Name or handle" />
+          <input class="select" type="text" placeholder="Your silverfish wisdom" aria-label="Your silverfish wisdom" />
+        </div>
+        <div class="btnrow">
+          <button type="button" class="ghost" onclick="alert('Guestbook is a nostalgic tribute right now — but your message is noted in spirit.')">Sign Guestbook</button>
+          <button type="button" class="ghost" onclick="alert('Add a real guestbook service link here when ready.')">Use a real guestbook →</button>
+        </div>
+      </div>
     </section>
 
     <section class="card" aria-label="Gentle gear">
@@ -531,6 +569,10 @@
 
         <div class="bar" aria-hidden="true"><div id="riskBar"></div></div>
         <div class="tiny" id="riskNote" style="margin-top:8px;">—</div>
+
+        <div class="callout" id="resultPlaceholder" style="margin-top:12px;">
+          Come back after you fill out the quiz above!
+        </div>
 
         <div class="result" id="result">
           <div class="tag"><span class="dot" id="dot"></span><span id="tagText">—</span></div>
@@ -785,6 +827,8 @@
       });
 
       document.getElementById('result').style.display = "block";
+      const placeholder = document.getElementById('resultPlaceholder');
+      if (placeholder) placeholder.style.display = "none";
       window.__lastResult = { data, meta, pal, copy };
     }
 
@@ -814,6 +858,8 @@
       document.getElementById('freq').value = "once";
       ["night","humidity","leak","paper","clutter","damage"].forEach(id=>document.getElementById(id).checked=false);
       document.getElementById('result').style.display = "none";
+      const placeholder = document.getElementById('resultPlaceholder');
+      if (placeholder) placeholder.style.display = "block";
       document.getElementById('kpiLevel').textContent = "—";
       document.getElementById('kpiDriver').textContent = "—";
       document.getElementById('kpiFocus').textContent = "—";
@@ -867,6 +913,77 @@
     document.getElementById('btnRun').addEventListener('click', render);
     document.getElementById('btnReset').addEventListener('click', resetAll);
     document.getElementById('btnCopy').addEventListener('click', copyResults);
+    const ambientBtn = document.getElementById('ambientBtn');
+    let ambientOn = false;
+    let audioCtx = null;
+    let noiseSource = null;
+    let gainNode = null;
+    let filterNode = null;
+
+    function startAmbient(){
+      if (!audioCtx){
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === "suspended"){
+        audioCtx.resume();
+      }
+
+      const bufferSize = 2 * audioCtx.sampleRate;
+      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++){
+        data[i] = (Math.random() * 2 - 1) * 0.2;
+      }
+
+      noiseSource = audioCtx.createBufferSource();
+      noiseSource.buffer = buffer;
+      noiseSource.loop = true;
+
+      filterNode = audioCtx.createBiquadFilter();
+      filterNode.type = "lowpass";
+      filterNode.frequency.value = 800;
+      filterNode.Q.value = 0.6;
+
+      gainNode = audioCtx.createGain();
+      gainNode.gain.value = 0.0;
+
+      noiseSource.connect(filterNode);
+      filterNode.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      noiseSource.start(0);
+
+      // fade in
+      gainNode.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 1.2);
+    }
+
+    function stopAmbient(){
+      if (!audioCtx || !gainNode || !noiseSource) return;
+      // fade out then stop
+      gainNode.gain.cancelScheduledValues(audioCtx.currentTime);
+      gainNode.gain.linearRampToValueAtTime(0.0, audioCtx.currentTime + 0.8);
+      setTimeout(()=>{
+        try{ noiseSource.stop(0); }catch(e){}
+        noiseSource.disconnect();
+        filterNode.disconnect();
+        gainNode.disconnect();
+        noiseSource = null;
+        filterNode = null;
+        gainNode = null;
+      }, 900);
+    }
+
+    if (ambientBtn){
+      ambientBtn.addEventListener('click', ()=>{
+        ambientOn = !ambientOn;
+        if (ambientOn){
+          startAmbient();
+          ambientBtn.textContent = "Stop ambient silverfish sounds";
+        }else{
+          stopAmbient();
+          ambientBtn.textContent = "Click for ambient silverfish sounds";
+        }
+      });
+    }
 
     function initVisitCounter(){
       const key = "silverfish-sense-visits";
