@@ -368,6 +368,93 @@
       margin-bottom:8px;
       text-shadow:0 0 8px rgba(255,230,106,.6);
     }
+    @keyframes scurry{
+      0%{transform:translateX(-60px)}
+      100%{transform:translateX(calc(100vw + 60px))}
+    }
+    .parade-fish{
+      position:fixed;
+      bottom:0;
+      left:-60px;
+      width:48px;
+      height:20px;
+      z-index:9999;
+      animation:scurry var(--speed,3s) linear forwards;
+      pointer-events:none;
+      filter:drop-shadow(0 0 6px rgba(82,247,255,.6));
+    }
+    .fishsvg.glowing{
+      filter:drop-shadow(0 0 20px rgba(82,247,255,.9)) drop-shadow(0 0 40px rgba(255,106,213,.6));
+      transition:filter .5s;
+    }
+    .ate-tooltip{
+      position:fixed;
+      background:var(--card);
+      border:2px solid var(--neon-yellow);
+      color:var(--neon-yellow);
+      padding:6px 10px;
+      border-radius:10px;
+      font-size:12px;
+      font-family:"Courier New",monospace;
+      z-index:9999;
+      pointer-events:none;
+      animation:fadeAte 2s forwards;
+      text-shadow:0 0 6px rgba(255,230,106,.6);
+    }
+    @keyframes fadeAte{
+      0%{opacity:1;transform:translateY(0)}
+      70%{opacity:1;transform:translateY(-10px)}
+      100%{opacity:0;transform:translateY(-20px)}
+    }
+    .wayback-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.85);
+      z-index:10000;
+      display:none;
+      overflow:auto;
+    }
+    .wayback-overlay.active{display:flex;align-items:center;justify-content:center}
+    .wayback-inner{
+      background:#808080;
+      color:#000;
+      border:4px outset #c0c0c0;
+      padding:20px;
+      max-width:600px;
+      width:90%;
+      font-family:"Times New Roman",serif;
+      text-align:center;
+    }
+    .wayback-inner h1{
+      color:#ff00ff;
+      font-size:28px;
+      text-shadow:none;
+    }
+    .wayback-inner .wb-marquee{
+      background:#000080;
+      color:#ffff00;
+      padding:4px;
+      margin:10px 0;
+    }
+    .wayback-inner hr{
+      border:none;
+      height:4px;
+      background:linear-gradient(90deg,red,orange,yellow,green,blue,indigo,violet);
+    }
+    .wayback-inner .wb-close{
+      background:#c0c0c0;
+      border:2px outset #fff;
+      color:#000;
+      font-family:"Times New Roman",serif;
+      padding:4px 12px;
+      cursor:pointer;
+      margin-top:12px;
+    }
+    .hidden-entry{
+      display:none;
+      margin-top:10px;
+    }
+    .hidden-entry.revealed{display:block}
   </style>
   <script type="application/ld+json">
   {
@@ -382,6 +469,17 @@
 </head>
 
 <body>
+<!--
+       \  |  /
+        \_|_/
+  =====[o]============>>
+        / | \
+       /  |  \
+
+  You found Glimmer's cousin.
+  Her name is Shimmer.
+  She lives in the source code.
+-->
   <div class="wrap">
     <header>
       <div class="brand">
@@ -522,6 +620,11 @@
         <div style="font-weight:800; color:var(--neon-yellow);">*** New entries offline for maintenance ***</div>
         <div class="muted" style="margin-top:4px;">Our GuestBook 2000 server is being migrated. Check back soon!</div>
       </div>
+      <div class="callout hidden-entry" id="hiddenEntry">
+        <ul class="list" style="margin:0;">
+          <li><b>admin_1997</b>: "If you're reading this, the migration is never finishing. I am the server now."</li>
+        </ul>
+      </div>
     </section>
 
     <section class="card" aria-label="Gentle gear">
@@ -652,6 +755,23 @@
       </div>
       <div class="tiny" style="margin-top:8px;">Member site #47 of 203</div>
     </nav>
+  </div>
+
+  <div class="wayback-overlay" id="waybackOverlay">
+    <div class="wayback-inner">
+      <div style="font-size:11px;color:#333;">Wayback Machine &mdash; March 14, 1997</div>
+      <hr>
+      <h1>~*~ Welcome to Silverfish Sense ~*~</h1>
+      <div class="wb-marquee"><marquee>YOU ARE VISITOR NUMBER 3!!!!</marquee></div>
+      <p>** UNDER CONSTRUCTION **</p>
+      <p style="color:#0000ff;font-size:18px;">This page is dedicated to my friend the silverfish.</p>
+      <p>Sign my <span style="color:red;"><b>GUESTBOOK</b></span> (coming soon)</p>
+      <p style="font-size:12px;">Best viewed in Netscape Navigator 3.0 at 640x480</p>
+      <p style="font-size:12px;">Last updated: March 14, 1997</p>
+      <hr>
+      <p style="font-size:10px;color:#444;">This is what the site WOULD have looked like in 1997. Probably.</p>
+      <button class="wb-close" onclick="document.getElementById('waybackOverlay').classList.remove('active')">[ CLOSE ]</button>
+    </div>
   </div>
 
   <script>
@@ -841,7 +961,12 @@
       document.getElementById('tagText').textContent = `Coexistence signal: ${pal.label} (${meta.s}/100)`;
 
       // fun compatibility line
-      const compat = meta.s < 35 ? "Casual roommates — they barely know you exist."
+      const allChecked = data.night && data.humidity && data.leak && data.paper && data.clutter && data.damage;
+      const compat = meta.s <= 18
+                    ? "You don't have a silverfish situation. You have a silverfish <em>friendship</em>."
+                    : allChecked
+                    ? "At this point, you might be the one living in <em>their</em> home."
+                    : meta.s < 35 ? "Casual roommates — they barely know you exist."
                     : meta.s < 65 ? "Co-tenants — you're aware of each other and that's OK."
                     : "Committed cohabitants — you're basically family at this point.";
       let compatEl = document.getElementById('compatLine');
@@ -1062,13 +1187,165 @@
 
       const pad = String(count).padStart(6, "0");
       const el = document.getElementById("visitCounter");
-      if (el) el.textContent = `Visitors: ${pad}`;
+      if (el){
+        el.textContent = `Visitors: ${pad}`;
+        if (count === 42) el.textContent += ` — You are now an honorary silverfish.`;
+        if (count >= 100) el.textContent += ` — Glimmer considers you family.`;
+      }
     }
 
     // initialize
     resetAll();
     initVisitCounter();
     renderShop();
+
+    // ===== EASTER EGGS =====
+
+    // #2: Click logo 7 times → silverfish parade
+    (function(){
+      let logoClicks = 0;
+      const logo = document.querySelector('.logo');
+      if (!logo) return;
+      logo.style.cursor = 'pointer';
+      logo.addEventListener('click', ()=>{
+        logoClicks++;
+        if (logoClicks === 7){
+          logoClicks = 0;
+          for (let i = 0; i < 8; i++){
+            setTimeout(()=>{
+              const fish = document.createElementNS('http://www.w3.org/2000/svg','svg');
+              fish.setAttribute('viewBox','0 0 32 18');
+              fish.setAttribute('class','parade-fish');
+              fish.style.setProperty('--speed', (2.5 + Math.random()*2)+'s');
+              fish.style.bottom = (Math.random()*60)+'px';
+              fish.innerHTML = '<path d="M1 4C0 2 0 1 0 0" fill="none" stroke="#52f7ff" stroke-width="1"/><path d="M1 14c-1 2-1 3-1 4" fill="none" stroke="#52f7ff" stroke-width="1"/><path d="M2 9c4-8 14-10 22-5 2 1 2 2 0 3-8 5-18 3-22 2z" fill="#52f7ff" stroke="#0a0024" stroke-width="1"/><circle cx="6" cy="8" r="1" fill="#0a0024"/>';
+              document.body.appendChild(fish);
+              fish.addEventListener('animationend', ()=>fish.remove());
+            }, i * 300);
+          }
+        }
+      });
+    })();
+
+    // #3: Type "glimmer" anywhere → mascot glows
+    (function(){
+      let buffer = '';
+      document.addEventListener('keydown', (e)=>{
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
+        buffer += e.key.toLowerCase();
+        if (buffer.length > 20) buffer = buffer.slice(-20);
+        if (buffer.includes('glimmer')){
+          buffer = '';
+          const svg = document.querySelector('.fishsvg');
+          if (svg){
+            svg.classList.add('glowing');
+            setTimeout(()=>svg.classList.remove('glowing'), 5000);
+          }
+        }
+      });
+    })();
+
+    // #4: Highlight text → "silverfish ate this" tooltip (1 in 10)
+    (function(){
+      document.addEventListener('mouseup', ()=>{
+        const sel = window.getSelection();
+        if (!sel || sel.isCollapsed || sel.toString().trim().length < 3) return;
+        if (Math.random() > 0.1) return;
+        const range = sel.getRangeAt(0);
+        const rect = range.getBoundingClientRect();
+        const tip = document.createElement('div');
+        tip.className = 'ate-tooltip';
+        tip.textContent = '~a silverfish nibbled this~';
+        tip.style.left = (rect.left + rect.width/2 - 80) + 'px';
+        tip.style.top = (rect.top - 30) + 'px';
+        document.body.appendChild(tip);
+        setTimeout(()=>tip.remove(), 2200);
+      });
+    })();
+
+    // #5: Visit after midnight → different greeting
+    (function(){
+      const hour = new Date().getHours();
+      if (hour >= 0 && hour < 5){
+        const mq = document.querySelector('.marquee marquee');
+        if (mq) mq.textContent = "You're up late. So are they.";
+      }
+    })();
+
+    // #8: Click "Est. 1997" → Wayback overlay
+    (function(){
+      const badges = document.querySelectorAll('.counter');
+      badges.forEach(b=>{
+        if (b.textContent.includes('Est. 1997')){
+          b.style.cursor = 'pointer';
+          b.addEventListener('click', ()=>{
+            document.getElementById('waybackOverlay').classList.add('active');
+          });
+        }
+      });
+    })();
+
+    // #9: Hover ambient button 5 seconds without clicking → creepy text
+    (function(){
+      const btn = document.getElementById('ambientBtn');
+      if (!btn) return;
+      let hoverTimer = null;
+      const origText = 'Click for ambient silverfish sounds';
+      btn.addEventListener('mouseenter', ()=>{
+        hoverTimer = setTimeout(()=>{
+          if (!ambientOn) btn.textContent = 'They can hear you breathing.';
+        }, 5000);
+      });
+      btn.addEventListener('mouseleave', ()=>{
+        clearTimeout(hoverTimer);
+        if (!ambientOn && btn.textContent === 'They can hear you breathing.'){
+          btn.textContent = origText;
+        }
+      });
+    })();
+
+    // #10: Triple-click "Under Construction" → "GRAND OPENING"
+    (function(){
+      const el = document.querySelector('.blink');
+      if (!el) return;
+      let clicks = 0;
+      let timer = null;
+      el.style.cursor = 'pointer';
+      el.addEventListener('click', ()=>{
+        clicks++;
+        clearTimeout(timer);
+        timer = setTimeout(()=>{ clicks = 0; }, 500);
+        if (clicks === 3){
+          clicks = 0;
+          const orig = el.textContent;
+          el.textContent = 'GRAND OPENING';
+          el.style.borderColor = 'var(--neon-green)';
+          el.style.color = 'var(--neon-green)';
+          el.style.textShadow = '0 0 8px rgba(125,255,178,.8)';
+          setTimeout(()=>{
+            el.textContent = orig;
+            el.style.borderColor = '';
+            el.style.color = '';
+            el.style.textShadow = '';
+          }, 5000);
+        }
+      });
+    })();
+
+    // #11: Hidden guestbook entry revealed when scrolling to bottom
+    (function(){
+      const entry = document.getElementById('hiddenEntry');
+      if (!entry) return;
+      const webring = document.querySelector('.webring');
+      if (!webring) return;
+      const observer = new IntersectionObserver((entries)=>{
+        if (entries[0].isIntersecting){
+          entry.classList.add('revealed');
+          observer.disconnect();
+        }
+      }, { threshold: 0.5 });
+      observer.observe(webring);
+    })();
   </script>
 </body>
 </html>
