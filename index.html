@@ -1133,7 +1133,7 @@
       // tag + dot
       document.getElementById('dot').style.background = pal.dot;
       document.getElementById('dot').style.boxShadow = `0 0 0 4px ${pal.dot.replace("var(--","rgba(").includes("rgba(") ? "rgba(126,231,135,.12)" : "rgba(126,231,135,.12)"}`;
-      document.getElementById('tagText').textContent = `Coexistence signal: ${pal.label} (${meta.s}/100)`;
+      document.getElementById('tagText').textContent = `Coexistence risk signal: ${pal.label} (${meta.s}/100)`;
 
       // fun compatibility line
       const allChecked = data.night && data.humidity && data.leak && data.paper && data.clutter && data.damage;
@@ -1239,7 +1239,7 @@
       const { data, meta, pal } = window.__lastResult;
       const lines = [
         "Silverfish Sense — results",
-        `Coexistence signal: ${pal.label} (${meta.s}/100)`,
+        `Coexistence risk signal: ${pal.label} (${meta.s}/100)`,
         `Level: ${meta.level}`,
         `Main driver: ${meta.driver}`,
         `Priority focus: ${meta.focus}`,
