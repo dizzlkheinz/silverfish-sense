@@ -74,8 +74,14 @@
     a:hover{text-decoration:underline}
     .wrap{max-width:980px; margin:0 auto; padding:28px 18px 72px}
     header{
-      display:flex; gap:14px; align-items:flex-start; justify-content:space-between; flex-wrap:wrap;
+      display:grid;
+      grid-template-columns: 1fr minmax(260px, 340px) 1fr;
+      gap:14px;
+      align-items:start;
       margin-bottom:18px;
+    }
+    header::after{
+      content:"";
     }
     .brand{
       display:flex; gap:12px; align-items:center;
@@ -106,6 +112,12 @@
       margin-top:14px;
     }
     @media (max-width: 860px){
+      header{
+        grid-template-columns: 1fr;
+      }
+      header::after{
+        content:none;
+      }
       .grid{grid-template-columns: 1fr;}
     }
     .card{
@@ -115,6 +127,9 @@
       padding:16px;
       box-shadow: 0 8px 0 rgba(0,0,0,.45), 0 18px 60px rgba(0,0,0,.28);
       backdrop-filter: blur(10px);
+    }
+    .quick-truth{
+      justify-self:center;
     }
     .card h2{margin:0 0 10px; font-size:18px}
     .hint{color:var(--muted); font-size:13.5px; margin-top:-2px}
@@ -670,7 +685,7 @@
         </div>
       </div>
 
-      <div class="card" style="min-width:260px; max-width:340px;">
+      <div class="card quick-truth" style="min-width:260px; max-width:340px;">
         <h2 style="margin-bottom:6px;">Quick truth</h2>
         <div class="hint">
           Silverfish don’t bite or sting. They’re mostly a “humidity + shelter” signal.
