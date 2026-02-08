@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dizzlkheinz.github.io/silverfish-sense/sitemap.xml
